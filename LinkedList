@@ -1,0 +1,142 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node
+{
+    int value;
+    struct node *next;
+}list;
+
+void begin_insert(list **a,int k)
+{
+    list *ptr=(list *)malloc(sizeof(list));
+    ptr->value=k;
+    ptr->next=*a;
+    *a=ptr;
+}
+
+void middle_insert(list *a,int k,int ind)
+{
+    list *ptr=(list *)malloc(sizeof(list));
+    
+    if(ind==0 || a==NULL)
+         return;
+         
+    list *temp=a;
+    for(int i=0;i<ind-1;i++)
+    {   
+        if(temp->next==NULL)
+            return;
+        temp=temp->next;
+    }
+    ptr->next=temp->next;
+    ptr->value=k;
+    temp->next=ptr;
+    
+}
+void end_insert(list **a,int k)
+{
+    list *ptr=(list *)malloc(sizeof(list));
+    ptr->value=k;
+    ptr->next=NULL;
+    list *temp=*a;
+    
+    if(temp==NULL)
+         {
+             *a=ptr;
+             return;
+         }
+        
+    while(temp->next!=NULL)
+        temp=temp->next;
+        
+    temp->next=ptr;
+}
+
+void begin_delete(list **a)
+{   
+    if(*a==NULL)
+        return;
+    list *temp=*a;
+    *a=(*a)->next;
+    free(temp);
+}
+
+void middle_delete(list *a,int ind)
+{
+    if(a==NULL || ind==0 )
+          return;
+    list *temp=a;
+    for(int i=0;i<ind-1;i++)
+    {   
+        if(temp->next==NULL)
+            return;
+        temp=temp->next;
+    }
+    if(temp->next==NULL)
+        return;
+        
+    list *t=temp->next;
+    temp->next=t->next;
+    free(t);
+}
+
+void end_delete(list **a)
+{
+    if(*a==NULL)
+        return;
+    list *temp=*a,*ptr;
+    if(temp->next==NULL)
+    {   
+        free(temp);
+        *a=NULL;
+        return;
+    }
+    while(temp->next!=NULL)
+    {   
+          ptr=temp;
+          temp=temp->next;
+    }
+    
+    free(ptr->next);
+    ptr->next=NULL;
+}
+void print(list *a)
+{   
+    if(a==NULL)
+       {
+           printf("Empty\n");
+           return;
+       }
+    list *temp=a;
+    printf("%d ",temp->value);
+    while(temp->next!=NULL)
+    {
+        temp=temp->next;
+        printf("%d ",temp->value);
+    }
+    printf("\n");
+}
+
+
+int main()
+{
+    struct node *head=NULL;
+    print(head);
+    begin_insert(&head,12);
+    print(head);
+    begin_insert(&head,14);
+    end_insert(&head,3);
+    print(head);
+    middle_insert(head,56,5);
+    end_insert(&head,89);
+    print(head);
+    middle_delete(head,1);
+    //end_delete(&head);
+    end_delete(&head);
+    end_delete(&head);
+    end_delete(&head);
+    print(head);
+    
+    
+}
